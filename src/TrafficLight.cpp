@@ -79,7 +79,7 @@ void TrafficLight::cycleThroughPhases()
 
     while (true)
     {
-        auto start = std::chrono::high_resolution_clock::now();
+        auto startTime = std::chrono::system_clock::now();
         std::this_thread::sleep_for(std::chrono::milliseconds(distr(gen)));
         if (_currentPhase == TrafficLightPhase::red)
         {
@@ -89,8 +89,8 @@ void TrafficLight::cycleThroughPhases()
         {
             _currentPhase = TrafficLightPhase::red;
         }
-        auto end = std::chrono::high_resolution_clock::now();
-        std::chrono::duration<double, std::milli> elapsed = end - start;
+        auto endTime = std::chrono::system_clock::now();
+        std::chrono::duration<double, std::milli> elapsedTime = endTime - startTime;
         auto msg = _currentPhase;
         auto is_sent = std::async(std::launch::async, 
                                   &MessageQueue<TrafficLightPhase>::send, 
